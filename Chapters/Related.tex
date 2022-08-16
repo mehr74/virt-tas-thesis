@@ -1,0 +1,40 @@
+ In this chapter, we explore the related work of virtualized TAS. We first outline recent 
+ works on TCP acceleration (section 3.1), then we list the state-of-the-art methods for network virtualization (section 3.2).
+
+
+
+\section{TCP acceleration techniques}
+
+
+\section{Network Virtualization}
+Public cloud providers, such as Amazon Web Services (AWS), Microsoft Azure, and Google Cloud Platform (GCP), have taken different approaches to provide network virtualization for their customers. While Microsoft has been following a hardware-assisted approach to provision networking demands, Google has been utilizing a software-only one. Section 3.2.1 elaborates on network 
+virtualization using a pure software approach, and section 3.2.2 explores the hardware-assisted network virtualization.
+
+
+\subsection{Network Virtualization in Software}
+
+\textbf{OpenFlow} proposes a standardized interface for programming the 
+flow tables of Ethernet switches. 
+
+OpenFlow was first proposed as a way, in which researchers could implement new protocols
+on top of production network. It is based on Ethernet switches with an internal flow-table,
+an a standardized interface to add and remove entries.
+
+% OpenFlow has three main component. 
+% 1. Flow-table residing on switch
+% 2. Secure interface between controller and the open flow switch
+% 3. Standardized OpenFlow interface for programming to program flow-table on the switch
+
+
+% What is flow? 
+% Flow could be a TCP connection, or all packets from a particular IP address,
+% or all packets from the same VLAN tag.
+% Flow are packets that match a specific header
+
+
+% What are actions on flows?
+% 1. Forward this flow to a given port (or ports) 
+% 2. Encapsulate and forward flows's packets to a controller
+% 3. Drop the flow's packets. 
+
+\subsection{Network Virtualization using hardware}
