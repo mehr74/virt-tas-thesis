@@ -7,19 +7,34 @@
 
 
 \section{Network Virtualization}
-Public cloud providers, such as Amazon Web Services (AWS), Microsoft Azure, and Google Cloud Platform (GCP), have taken different approaches to provide network virtualization for their customers. While Microsoft has been following a hardware-assisted approach to provision networking demands, Google has been utilizing a software-only one. Section 3.2.1 elaborates on network 
-virtualization using a pure software approach, and section 3.2.2 explores the hardware-assisted network virtualization.
+Public cloud providers, such as Amazon Web Services (AWS), Microsoft Azure, and Google Cloud Platform (GCP), have taken different approaches to network virtualization for their customers. While Microsoft has been following a hardware-assisted procedure to provision networking demands, Google has been 
+utilizing a software-only approach. Section 3.2.1 elaborates on network 
+virtualization using a pure software technique, and section 3.2.2 explores hardware-assisted network virtualization.
 
 
 \subsection{Network Virtualization in Software}
+\textbf{OpenFlow} was first proposed to enhance the implementation of new protocols
+on top of the production networks. It proposes a standardized interface to add and
+remove entries to flow tables residing on the Ethernet switches.\cite{mckeown2008openflow}
 
-\textbf{OpenFlow} proposes a standardized interface for programming the 
-flow tables of Ethernet switches. \cite{mckeown2008openflow}
 
-OpenFlow was first proposed as a way, in which researchers could implement new protocols
-on top of production network. It is based on Ethernet switches with an internal flow-table,
-an a standardized interface to add and remove entries.
+Open Flow has the following three main components:
+\begin{enumerate}
+    \item A Flow-table residing on the switch
+    \item Secure interface between a controller and the switch
+    \item Standardized OpenFlow interface for programming the flow table
+\end{enumerate}
 
+
+
+In OpenFlow, we can specify packet headers. OpenFlow switch then matches the 
+packets with the specified headers and gr
+Packets can be matched based on specific headers. For example, all packets from
+a particular sender could be specified with the sender's IP address in the header. 
+
+A flow is a set of packets that have similar characteristics. It could be a 
+TCP connection, or all packets from a particular IP address, or packets 
+with the same VLAN tag. 
 % OpenFlow has three main component. 
 % 1. Flow-table residing on switch
 % 2. Secure interface between controller and the open flow switch
