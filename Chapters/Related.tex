@@ -7,16 +7,28 @@
 
 
 \section{Network Virtualization}
-Public cloud providers, such as Amazon Web Services (AWS), Microsoft Azure, and Google Cloud Platform (GCP), have taken different approaches to network virtualization for their customers. While Microsoft has been following a hardware-assisted procedure to provision networking demands, Google has been 
+Public cloud providers, such as Amazon Web Services (AWS), Microsoft Azure, 
+and Google Cloud Platform (GCP), have taken different approaches to network 
+virtualization for their customers. While Microsoft has been following a 
+hardware-assisted procedure to provision networking demands, Google has been 
 utilizing a software-only approach. Section 3.2.1 elaborates on network 
-virtualization using a pure software technique, and section 3.2.2 explores hardware-assisted network virtualization.
+virtualization using a pure software technique, and section 3.2.2 explores 
+hardware-assisted network virtualization.
 
 
 \subsection{Network Virtualization in Software}
-\textbf{OpenFlow} was first proposed to enhance the implementation of new protocols
-on top of the production networks. It proposes a standardized interface to add and
-remove entries to flow tables residing on the Ethernet switches.\cite{mckeown2008openflow}
+\textbf{OpenFlow} was first proposed to enhance the implementation of 
+new protocols on top of the production networks. It proposes a standardized 
+interface to add and remove entries to flow tables residing on the Ethernet 
+switches.\cite{mckeown2008openflow}
 
+\begin{figure}
+\small
+\center
+\includegraphics[width=\textwidth]{../Figures/openflow.png}
+\caption{OpenFlow}
+\label{fig:openflow}
+\end{figure}
 
 Open Flow has the following three main components:
 \begin{enumerate}
