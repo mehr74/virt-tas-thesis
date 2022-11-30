@@ -17,51 +17,59 @@ hardware-assisted network virtualization.
 
 
 \subsection{Network Virtualization in Software}
-\textbf{OpenFlow} was first proposed to enhance the implementation of 
-new protocols on top of the production networks. It proposes a standardized 
-interface to add and remove entries to flow tables residing on the Ethernet 
-switches.\cite{mckeown2008openflow}
+
+
+\subsubsection{Google Snap system for host networking}
+
+As one of the primary cloud providers with internet-based products 
+that are used by a wide range of users, Google has prioritized 
+the following three main needs for host networking in their data centers. 
+
+\begin{enumerate}
+    \item The network bandwidth is continuously increasing and delivering 
+    novel approaches for edge switching and bandwidth management 
+    is essential. Therefore they require a system that enables 
+    fast delivery of innovative paradigms.
+    \item Rich virtualization features must be provided on top of 
+    host networking to enable cloud computing.
+    \item Distributed data-intensive applications require low latency 
+    and high throughput for their communication. As a consequence, the 
+    host networking system should be optimized with regard to these applications.
+\end{enumerate}
+
+Using kernel for networking at the end-hosts does not align with these 
+requirements and has the following three primary drawbacks for 
+cloud providers such as Google.
+
+\begin{enumerate}
+    \item Developing new features takes more effort 
+    when host networking is done on the kernel side, and 
+    fewer developers have the desired expertise in kernel development.
+    This makes the delivery of new paradigms harder and more expensive.
+
+    \item Only a subset of upgrades could be applied by probing new 
+    modules to the kernel  and main upgrades require the system reboot 
+    which comes with the high cost of application migration. 
+    
+    \item Upstream updates from the Linux community try to optimize for 
+    general case and may have conflicts with the vertical optimization
+    applied for distributed data-intensive applications.
+\end{enumerate}
+
+To reach the requirements of data-center networking and to mitigate the 
+drawbacks of using kernel in development of end-host network stack, 
+Google has proposed Snap. Snap is a userspace networking system, which is 
+initially inspired from microkernel architecture. By residing on the  
+userspace, the development of new features has became faster and 
+upgrades to networking stack can be applied transparently. Moreover, in 
+comparison to Linux Kernel networking stack it provides higher throughput.
 
 \begin{figure}
 \small
 \center
-\includegraphics[width=\textwidth]{../Figures/openflow.png}
-\caption{OpenFlow}
-\label{fig:openflow}
+\includegraphics[width=\textwidth]{../Figures/snap.png}
+\caption{Snap}
+\label{fig:snap}
 \end{figure}
-
-Open Flow has the following three main components:
-\begin{enumerate}
-    \item A Flow-table residing on the switch
-    \item Secure interface between a controller and the switch
-    \item Standardized OpenFlow interface for programming the flow table
-\end{enumerate}
-
-
-
-In OpenFlow, we can specify packet headers. OpenFlow switch then matches the 
-packets with the specified headers and gr
-Packets can be matched based on specific headers. For example, all packets from
-a particular sender could be specified with the sender's IP address in the header. 
-
-A flow is a set of packets that have similar characteristics. It could be a 
-TCP connection, or all packets from a particular IP address, or packets 
-with the same VLAN tag. 
-% OpenFlow has three main component. 
-% 1. Flow-table residing on switch
-% 2. Secure interface between controller and the open flow switch
-% 3. Standardized OpenFlow interface for programming to program flow-table on the switch
-
-
-% What is flow? 
-% Flow could be a TCP connection, or all packets from a particular IP address,
-% or all packets from the same VLAN tag.
-% Flow are packets that match a specific header
-
-
-% What are actions on flows?
-% 1. Forward this flow to a given port (or ports) 
-% 2. Encapsulate and forward flows's packets to a controller
-% 3. Drop the flow's packets. 
 
 \subsection{Network Virtualization using hardware}
