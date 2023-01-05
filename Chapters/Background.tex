@@ -1,126 +1,186 @@
-
+%---------------------------------------------------------------------------------------------%
 \section{Network Virtualization}
-%---------------------------------------------------------------------------%
-%
-%
-%
-%
-%
 
 
-Configuring the traditional networks was a hard and time-consuming task. Each networking vendor had its own interface, and configuring each device required the corresponding expertise. In addition to that, adding or removing a machine required multiple configurations to be set up in a box-by-box manner, which introduces an excessive operation overhead and increases the risk of misconfiguration \cite{cearley2013top, marty2019snap}.
+Configuring the traditional networks was a hard and time-consuming task. Each networking 
+vendor had its own interface, and configuring each device required the corresponding 
+expertise. In addition to that, adding or removing a machine required multiple configurations 
+to be set up in a box-by-box manner, which introduces an excessive operation overhead and 
+increases the risk of misconfiguration \cite{cearley2013top, marty2019snap}.
 
-Network virtualization aims to solve these issues by separating the control logic (control-plane) from the forwarding hardware (data-plane) \cite{koponen2014network, caesar2005design, casado2007ethane, gude2008nox, koponen2010onix, mckeown2008openflow}. Through a virtualization layer, users can create virtual networks, with arbitrary service models, topologies, and addressing scheme, using the same physical network. Furthermore, a global abstraction enables management and configuration of these virtual networks \cite{mckeown2008openflow}.
+Network virtualization aims to solve these issues by separating the control logic 
+(control-plane) from the forwarding hardware (data-plane) \cite{koponen2014network, 
+caesar2005design, casado2007ethane, gude2008nox, koponen2010onix, mckeown2008openflow}. 
+Through a virtualization layer, users can create virtual networks, with arbitrary service 
+models, topologies, and addressing scheme, using the same physical network. Furthermore, 
+a global abstraction enables management and configuration of these virtual networks 
+\cite{mckeown2008openflow}.
 
-To provide network virtualization for cloud tenants, public cloud providers, such as Amazon Web Services (AWS), Microsoft Azure, and Google Cloud Platform (GCP), have taken different approaches. While Microsoft has been following a hardware-assisted procedure to provision networking demands \cite{firestone2018azure, firestone2017vfp}, Google has been utilizing a software-only approach \cite{marty2019snap}. In this section, we first introduce two seminal open-source projects in network virtualization, namely OpenFlow (Section \ref{OpenFlow}), and Open Virtual Switch (Section \ref{OVS}). We then elaborate on the state-of-the art network virtualization used by VMWare (Section \ref{nvp}), Google (Section \ref{snap}), and Microsoft(Section \ref{vfp}).
-
-
-% SDN has three main components. 
-% 1. Interface between applications, and SDN
-% 2. Interface between SDN, and different network elements (Open Flow)
-% 3. The control logic on the SDN (the brain of the network)
-
-% 2. The most common interfaces used to control switches called 
-%    OpenFlow. It has multiple versions and each version added new
-%    features
-
-% 3. There are multiple controller proposed
-%    3.1 POX is a SDN controller written in python
-%    3.2 OpenDayLight is the largest open source SDN.
-
-% We can use mininet to emulate network and demonstrate the use of 
-% Software Defined Networking.
+To provide network virtualization for cloud tenants, public cloud providers, such as Amazon 
+Web Services (AWS), Microsoft Azure, and Google Cloud Platform (GCP), have taken different 
+approaches. While Microsoft has been following a hardware-assisted procedure to provision 
+networking demands \cite{firestone2018azure, firestone2017vfp}, Google has been utilizing 
+a software-only approach \cite{marty2019snap}. In this section, we first introduce two seminal 
+open-source projects in network virtualization, namely OpenFlow (Section \ref{OpenFlow}), 
+and Open Virtual Switch (Section \ref{OVS}). We then elaborate on the state-of-the art network 
+virtualization used by VMWare (Section \ref{nvp}), Google (Section \ref{snap}), and 
+Microsoft(Section \ref{vfp}).
 
 \subsection{OpenFlow}
 \label{OpenFlow}
-\textbf{OpenFlow} was first proposed to enhance the implementation of new protocols on top of the production networks. It consists of a standardized interface to add or remove entries from flow tables residing on the Ethernet switches \cite{mckeown2008openflow}.
+\textbf{OpenFlow} was first proposed to enhance the implementation of new protocols on top 
+of the production networks. It consists of a standardized interface to add or remove entries 
+from flow tables residing on the Ethernet switches \cite{mckeown2008openflow}.
 
-Flow tables are the fundamental data structure of an OpenFlow switch. They consist of flow entries and proper actions to the packets of each flow. A flow is a set of packets that have similar characteristics. It could be a TCP connection, all packets from a particular port number, or packets with the same VLAN tag. An OpenFlow switch matches the packets with the specified flows and applies the action of that flow. 
-For example, all packets from a particular sender could be dropped by the OpenFlow switch. 
+Flow tables are the fundamental data structure of an OpenFlow switch. They consist of flow 
+entries and proper actions to the packets of each flow. A flow is a set of packets that have 
+similar characteristics. It could be a TCP connection, all packets from a particular port 
+number, or packets with the same VLAN tag. An OpenFlow switch matches the packets with the 
+specified flows and applies the action of that flow. For example, all packets from a 
+particular sender could be dropped by the OpenFlow switch. 
 
-The three basic actions that are supported by an OpenFlow switch consists of (\emph{i}) forwarding packets to a given port (or ports), (\emph{ii}) encapsulating and forwarding packets to a controller, and (\emph{iii}) dropping packets.
+The three basic actions that are supported by an OpenFlow switch consists of (\emph{i}) 
+forwarding packets to a given port (or ports), (\emph{ii}) encapsulating and forwarding 
+packets to a controller, and (\emph{iii}) dropping packets.
 
 
 In summary, an OpenFlow switch has the following three main components:
 \begin{enumerate}
-    \item \emph{A Flow-table residing on the Ethernet switch}: This flow table 
-    maintains information about existing flows and actions required
-    to be applied to the corresponding packets.
-    \item \emph{Secure interface between a controller and the switch}.
-    The interface is used when a packet has no corresponding 
-    entry in the flow table. In such scenarios, the packets will 
-    be forwarded through this interface to a controller. The controller
-    can then decide for the corresponding action.
-    \item \emph{Standardized OpenFlow interface to program flow tables}. 
-    With this standardized interface, a controller can update the flow-tables 
-    on Ethernet switches. Therefore, not all the packets are required to 
-    be transferred to the controller, hence higher throughput can be achieved. 
+    \item \emph{A Flow-table residing on the Ethernet switch}: This flow table maintains 
+    information about existing flows and actions required to be applied to the corresponding 
+    packets.
+    \item \emph{Secure interface between a controller and the switch}: The interface is used 
+    when a packet has no corresponding entry in the flow table. In such scenarios, the packets 
+    will be forwarded through this interface to a controller. The controller can then decide 
+    for the corresponding action.
+    \item \emph{Standardized OpenFlow interface to program flow tables}: With this standardized
+    interface, a controller can update the flow-tables on Ethernet switches. Therefore, not 
+    all the packets are required to be transferred to the controller, hence higher throughput 
+    can be achieved. 
 \end{enumerate}
 
 Further detailed specifications of an OpenFlow switch are defined by 
 \emph{Open Networking Foundation} \cite{specification2009version}. 
 
 
-
-
-
 \subsection{Open Virtual Switch (OVS)}
 \label{OVS}
-Conventional virtual switches are concerned only with providing a basic network connection for VMs through L2 networks. This was changed with the advent of network virtualization. Today's virtual switches provide most network services for VMs, and the physical networks only transmit IP-tunneled packets. Therefore, VMs are no longer tightly connected to physical datacenter networks and the workloads benefit from higher scalability and mobilifty.
 
-As the complexity of network virtualization increased, the need for a production-level multi-layer virtual switch became a necessity. Open vSwitch (OVS) was designed and implemented to address this need. It enables network virtualization through OpenFlow and supports standard interface management protocols such as NetFlow\cite{claise2004cisco}, sFlow\cite{wang2004sflow}.
+Conventional virtual switches are concerned only with providing a basic network connection 
+for VMs through L2 networks. This was changed with the advent of network virtualization. 
+Today's virtual switches provide most network services for VMs, and the physical networks 
+only transmit IP-tunneled packets. Therefore, VMs are no longer tightly connected to physical 
+datacenter networks and the workloads benefit from higher scalability and mobilifty.
 
-Open vSwitch has a long history of development and in order to keep up with the production workloads and increase the development velocity,
-the following key design choices were made by OVS community:
+As the complexity of network virtualization increased, the need for a production-level 
+multi-layer virtual switch became a necessity. Open vSwitch (OVS) was designed and implemented 
+to address this need. It enables network virtualization through OpenFlow and supports standard 
+interface management protocols such as NetFlow\cite{claise2004cisco}, sFlow\cite{wang2004sflow}.
+
+Open vSwitch has a long history of development and in order to keep up with the production 
+workloads and increase the development velocity, the following key design choices were made 
+by OVS community:
+
 \begin{enumerate}
-    \item \textbf{Use tuple search classification.}.  Tuple search classification supports constant time updates. Constant time updates are essential in virtualized environments, where a controller sends flow updates multiple times a second. Furthermore, it consumes memory linear in the number of flows, and it can be generalized to all combinations of packet header fields.
-    \item \textbf{Split implementation between Kernel and userspace.} Kernel-based networking makes the development and release cycles lengthy. Moreover, OVS would not be accepted as a contribution to upstream Linux, if it was implemented solely in Kernel. Thereby, OVS uses kernel as a match and action cache and the main classification labor is done in userspace by a virtual switch daemon.
-    \item \textbf{Benefit from caching.} OVS uses a two-layers caching mechanism to match packets in the Kernel. A Microflow cache layer matches on specific flows with exact headers fields, and a Megaflow cache layer matches on a wildcard of flows. These wildcards are generated by the cross-product of OpenFlow match and action tables.
+    \item \textbf{Use tuple search classification.}.  Tuple search classification supports 
+    constant time updates. Constant time updates are essential in virtualized environments,
+    where a controller sends flow updates multiple times a second. Furthermore, it consumes 
+    memory linear in the number of flows, and it can be generalized to all combinations of 
+    packet header fields.
+
+    \item \textbf{Split implementation between Kernel and userspace.} Kernel-based networking 
+    makes the development and release cycles lengthy. Moreover, OVS would not be accepted as 
+    a contribution to upstream Linux, if it was implemented solely in Kernel. Thereby, OVS 
+    uses kernel as a match and action cache and the main classification labor is done in 
+    userspace by a virtual switch daemon.
+
+    \item \textbf{Benefit from caching.} OVS uses a two-layers caching mechanism to match 
+    packets in the Kernel. A Microflow cache layer matches on specific flows with exact 
+    headers fields, and a Megaflow cache layer matches on a wildcard of flows. These wildcards 
+    are generated by the cross-product of OpenFlow match and action tables.
+    
 \end{enumerate}
 
-Although OVS has a positive impact on making virtual switches available for the networking community, there are a few shortcomings which makes it not suitable for large scale deployments.
+Although OVS has a positive impact on making virtual switches available for the networking 
+community, there are a few shortcomings which makes it not suitable for large scale 
+deployments.
 
 \begin{enumerate}
-    \item \textbf{Explicit tunnel interface.} OVS adds another interface to setup encap and decap policies and to change it we need to change the vswitch :D % TODO polish
-    \item \textbf{No support for multi-controller model.} In a multi-controller network, a virtual switch transmits in-bound packets in the reverse direction of out-bound packets to make the states consistent, whereas OVS only supports forward transmission. 
-    \item \textbf{No support for stateful actions} Actions are not stateful, there are trackers supported by OVS but it does not support stateful actiosn %TODO polish 
-    \item \textbf{Performance} Packets that are not in the tables should go through the slowpath and then to controller this makes it vulnerable to DDoS attach and cache polution.  %TODO polish 
+    \item \textbf{Explicit tunnel interface.} OVS adds another interface to setup encap and 
+    decap policies and to change it we need to change the vswitch :D % TODO polish
+
+    \item \textbf{No support for multi-controller model.} In a multi-controller 
+    software-defined network, a virtual switch transmits in-bound packets in the reverse 
+    direction of out-bound packets to make the states consistent, whereas OVS only supports forward transmission. 
+
+    \item \textbf{No support for stateful actions} Actions are not stateful, there are 
+    trackers supported by OVS but it does not support stateful actiosn %TODO polish 
+
+    \item \textbf{Performance} Packets that are not in the tables should go through the 
+    slowpath and then to controller this makes it vulnerable to DDoS attach and cache 
+    polution.  %TODO polish 
+
 \end{enumerate}
-This work does not address the limitation of OVS, we believe these limitation could be addressed in future works and we focus on using OVS to provide virtualization benefits to applications residing on VMs. %TODO polish 
+
+Despite the limitations of OVS, we decided to integrate OVS into our shared TCP fast-path,
+and take the benefits of its long history of development and deployment. Addressing 
+theses limitations is beyond the scope of this thesis and we believe the OVS community can
+address these issues in the future works. 
+
 \subsection{Network Virtualization Platform (NVP)}
 \label{nvp}
+
 
 \subsection{Snap}
 \label{snap}
 
-
-As one of the primary cloud providers with internet-based products 
-that are used by a wide range of users, Google has prioritized 
-the following three main requirements for host networking in their data centers. 
+As one of the primary cloud providers with internet-based products that are used by a wide 
+range of users, Google has prioritized the following three main requirements for host 
+networking in their data centers. 
 
 \begin{enumerate}
-    \item \textbf{Fast development and release cycles.} The network bandwidth is continuously increasing and delivering novel approaches for edge switching and bandwidth management is inevitable. Thus, a system that enables fast delivery of innovative paradigms is required.
-    \item \textbf{Virtualization features.} Rich virtualization features must be provided on top of host networking to enable cloud computing.
-    \item \textbf{Low latency and high throughput.} Distributed data-intensive applications require low latency and high throughput for their communication. As a consequence, the  host networking system should be optimized with regard to these applications.
+    \item \textbf{Fast development and release cycles.} The network bandwidth is continuously 
+    increasing and delivering novel approaches for edge switching and bandwidth management is 
+    inevitable. Thus, a system that enables fast delivery of innovative paradigms is required.
+
+    \item \textbf{Virtualization features.} Rich virtualization features must be provided on 
+    top of host networking to enable cloud computing.
+
+    \item \textbf{Low latency and high throughput.} Distributed data-intensive applications 
+    require low latency and high throughput for their communication. As a consequence, the 
+    host networking system should be optimized with regard to these applications.
+
 \end{enumerate}
 
-To reach the requirements of data-center networking and to mitigate the drawbacks of using the kernel in the development of end-host network stack, Google has proposed Snap. Snap is a userspace networking system, which was initially inspired by microkernel architecture. By residing in userspace, the development of new features has become faster and upgrades to the networking stack can be applied transparently. Moreover, in comparison to the Linux Kernel networking stack, it provides higher throughput.
+To reach the requirements of data-center networking and to mitigate the drawbacks of using 
+the kernel in the development of end-host network stack, Google has proposed Snap. Snap is 
+a userspace networking system, which was initially inspired by microkernel architecture. 
+By residing in userspace, the development of new features has become faster and upgrades to
+the networking stack can be applied transparently. Moreover, in comparison to the Linux Kernel 
+networking stack, it provides higher throughput.
 
 \subsection{Virtual Filtering Platform (VFP)}
 \label{vfp}
 
-% explain what is network virtualization function (NVF)
 
-
-
+%---------------------------------------------------------------------------------------------%
 \section{TCP acceleration}
 
 
+
+%---------------------------------------------------------------------------------------------%
 \section{Related works}
 \subsection{NetKernel}
-Netkernel is another system that offers network stack as a service in virtualized environments.
-Like VirtTAS, Netkernel decouples the network stack from the VMs. Therefore, (\emph{i}) cloud users could benefit from fast deployment and maintenance of the network stack, (\emph{ii}) cloud providers can improve the efficiency of TCP stack processing stacks transparently. 
+Netkernel is another system that offers network stack as a service in virtualized 
+environments. Like VirtTAS, Netkernel decouples the network stack from the VMs. Therefore, 
+(\emph{i}) cloud users could benefit from fast deployment and maintenance of the network 
+stack, (\emph{ii}) cloud providers can improve the efficiency of TCP stack processing stacks 
+transparently. 
 
-Netkernel focuses on showing the feasibility of this approach to the research community but they have not explored exposing network virtualization features to network providers. Therefore the cloud provider would hesitate using this approach. % TODO polish
+Netkernel focuses on showing the feasibility of this approach to the research community but 
+they have not explored exposing network virtualization features to network providers. 
+Therefore the cloud provider would hesitate using this approach. % TODO polish
 
-VirtTAS solves the issue in another manner. It focuses both on providing virtualization features and solving the isolation issues that might occur in this system. % TODO polish
+VirtTAS solves the issue in another manner. It focuses both on providing virtualization 
+
+features and solving the isolation issues that might occur in this system. % TODO polish
