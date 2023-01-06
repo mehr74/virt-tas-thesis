@@ -1,58 +1,82 @@
 %!TEX root = ../Thesis.tex
 
-
-
 %---------------------------------------------------------------------------------------------%
 % a paragraph about virtualization, that is widely used
 Virtualization has gain a lot of popularity during the last two decades. Enabling fast 
 provisioning, increasing the availability time, and reducing the maintenance costs
-are a few reasons for the gained popularity of virtualization. Moreover, by multiplexing 
+for users are a few reasons of the gained popularity. Moreover, by multiplexing 
 multiple virtual machines (VMs) on a same physical server less enegry gets consumed, 
 which makes virtualization enviromental friendly and even more popular thesedays.
 
 %---------------------------------------------------------------------------------------------%
 % a paragraph about networking in virtualized environment
 Public cloud providers such as Amazon Web Services (AWS), Microsoft Azure, and Google Cloud
-Platform (GCP) are expanding the range of workloads which can be spilled over public cloud. 
-These  vendors, in addition to providing high number VMs with increased performance, have made 
+Platform (GCP) are expanding the range of workloads which can be spilled over virtualized environments. 
+These  vendors, in addition to providing high number of VMs with increased performance, have made 
 it possible for public tenants to migrate their home workloads without changing the 
-on-premises networking configurations. Furthermore the users of these environments
+on-premises networking configurations. Furthermore, the users of these environments
 benefit from supplied address spaces, security groups and ACLs, scalable load balancers, 
 bandwidth metering, QoS, and more \cite{firestone2017vfp}.
 
 
 %---------------------------------------------------------------------------------------------%
 % about new stacks for processing tcp
-Applications residing on VMs have bursty workloads, which require high throughput and low latecy 
-network access. This requirement has motivated cloud providers to increase their networking 
+The workloads applied by cloud tenants are bursty, which require high throughput and low latecy 
+network access. It was this requirement, which motivated cloud providers to increase their networking 
 speeds by more than 40x and more in a span of only a few years \cite{firestone2018azure}. While 
-networking speed is growing fast, the CPU improvement has become slower, and has reached the 
+networking speed is growing fast, the CPU improvement has become slower, and has experienced the 
 end of Moore's law \cite{esmaeilzadeh2011dark}. Hence efficient packet processing is becoming 
-more important. 
+more and more important. 
 
+Due to poor cache allocation, costly context switches, and resources sharing across different 
+cores, Linux TCP packet processing is considered as inefficient for modern data center 
+networking \cite{kaufmann2019tas, shashidhara2022flextoe}. Different techniques tried 
+to address the issue by reducing the overheads and improving the conventional TCP stack.
+These techniques include bypassing kernel to enable direct NIC access from user-space
+\cite{belay2014ix, jeong2014mtcp, prekas2017zygos}
+using receive side scaling (RSS) to carefuly steering and processing packets on multi-cores 
+architecture \cite{marty2019snap, kaufmann2019tas}, and offloading packet processing to 
+NICs with computation capabilities 
+\cite{arashloo2020enabling, lin2020panic, firestone2018azure, shashidhara2022flextoe}. 
 
 
 %---------------------------------------------------------------------------------------------%
-% a graph of numbers which motivates us to provide new stacks for applications
-
-
-%---------------------------------------------------------------------------------------------%
-% about netkernel and why it does not the problem we are solving
-
+% why modern tcp stacks are not applicable by VMs
+Although these techniques have imporved the performance of end-host packet processing, most cloud 
+operators hesitate to deploy them on their fleets. Majority of these techniques are proposed only for 
+applications running on bare metal servers and they do not consider providing the rich 
+virtualization features required in multi-tentant datacenters. 
 
 %---------------------------------------------------------------------------------------------%
 % we asked ourself whether it is possible to provide
-
+% TODO extend 
+In this thesis we asked the following question: how can we provide virtualization features on 
+top of the modern stacks? and we tried to come up with an implementation which shows how we 
+do. To do so, we chose TAS as bla bla, and Open vSwitch as bla bla. We integrate the fast path.
 
 %---------------------------------------------------------------------------------------------%
 % briefly explain how VirtTAS works
+% TODO extend
+Our work is built upon the two other project Florian thesis. Netkernel is another project 
+which shows the feasibility but does not mention the virtualization features.
 
 
 %---------------------------------------------------------------------------------------------%
 % what are the main contributions of this thesis
-
+% TODO extend
+We have the following contribution.
+\begin{itemize}
+    \item Extend TAS to support groups
+    \item Use OVS to steer packets from TAS
+    \item provide implementation which integrates TAS to OVS.
+    \item evaluate.
+\end{itemize}
 
 %---------------------------------------------------------------------------------------------%
 % structure of next sections
+% TODO extend
+The rest of this thesis is organized in this order.
+
+
 
 
