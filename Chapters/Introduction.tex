@@ -23,7 +23,14 @@ bandwidth metering, QoS, and more \cite{firestone2017vfp}.
 
 %---------------------------------------------------------------------------------------------%
 % about new stacks for processing tcp
-Applications residing on VMs require high throughput and low latecy network access.
+Applications residing on VMs have bursty workloads, which require high throughput and low latecy 
+network access. This requirement has motivated cloud providers to increase their networking 
+speeds by more than 40x and more in a span of only a few years \cite{firestone2018azure}. While 
+networking speed is growing fast, the CPU improvement has become slower, and has reached the 
+end of Moore's law \cite{esmaeilzadeh2011dark}. Hence efficient packet processing is becoming 
+more important. 
+
+
 
 %---------------------------------------------------------------------------------------------%
 % a graph of numbers which motivates us to provide new stacks for applications
