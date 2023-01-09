@@ -45,24 +45,30 @@ NICs with computation capabilities
 % why modern tcp stacks are not applicable by VMs
 Although these techniques have imporved the performance of end-host packet processing, they 
 suffer from two fundamental implications when it comes to providing high throughput and 
-low latency network access for applications residing on VMs in virtualized environments. 
+low latency network access for applications residing on VMs.
 
-% users hesitate to use new stacks 
-\textbf{Implication I.} The maintenance of new stacks is costly for the cloud tenants, 
-as they are only concerned with performance of their applications.
 
 % operators hesitate to deploy new stacks 
-\textbf{Implication II.} majority of these techniques are proposed only for applications running on bare metal 
-servers and they do not provide the rich virtualization features required in 
-multi-tentant datacenters. Therefore, cloud providers hesitate to provide them for their
-tenants and applications still use the conventional TCP packet processing.
+\textbf{Implication I.} Majority of these techniques are proposed only for applications running
+on bare metal servers, and they do not provide the rich virtualization features required in 
+multi-tentant datacenters. Hence, cloud providers hesitate to deploy the techniques for
+their tenants and applications still use the conventional TCP packet processing.
+
+% users hesitate to use new stacks 
+\textbf{Implication II.} Cloud tenants are only concerned with performance of their applications,
+and they do not want the maintenance of the network stack to fallout on their shoulders. Deploying 
+new packet processing stacks requires extensive testing and comes with the risk of 
+misconfigurations. Therefore, cloud tenants hesitate to deploy the techniques in trade with
+high throughput and low latency.
 
 %---------------------------------------------------------------------------------------------%
 % goal
 % we asked ourself whether it is possible to provide
 % TODO extend 
 \textbf{Goal} In this thesis, we ask the following question: \emph{How can we provide virtualization 
-features on top of the modern stacks?} 
+features on top of the modern stacks?} In response, enrich Virt-TAS with virtualization features.
+Virt-TAS is a TCP acceleration service for virtualized environments targeted at applications 
+that require low latency and high throughput.
 
 %---------------------------------------------------------------------------------------------%
 % briefly explain how VirtTAS works
