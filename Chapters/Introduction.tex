@@ -66,19 +66,19 @@ high throughput and low latency.
 % we asked ourself whether it is possible to provide
 % TODO extend 
 \textbf{Goal} In this thesis, we ask the following question: \emph{How can we provide virtualization 
-features on top of the modern stacks?} In response, enrich Virt-TAS with virtualization features.
+features on top of the modern stacks?} In response, we enrich Virt-TAS with virtualization features.
 Virt-TAS is a TCP acceleration service for virtualized environments targeted at applications 
-that require low latency and high throughput.
+that require low latency and high throughput. It runs as a service alongside the host and provides 
+a fast-path for common send and receive operations, through which it reduces the virtualization 
+overheads incurred by the hypervisor and guest operating system. 
 
 %---------------------------------------------------------------------------------------------%
 % briefly explain how VirtTAS works
 % TODO extend
-To answer the question, we seek to avoid reinventing the wheel by building upon two solid project
-in datacenter networking. From one side, we are using Open vSwitch to provider virtualization 
-features. Open vSwitch is a virtual switch that enables virtualization through OpenFlow interface.
-From the other side, we selected TCP acceleration service (TAS) as our modern TCP packet processing
-stack.  
-
+To avoid reinventing the wheel, instead of implementing a virtual switch from scratch, we
+complement Virt-TAS by integrating Open vSwitch (OVS). OVS is a virtual switch which is adopted
+in many data center networks. It is also a component of VMware's NSX product, used by thousands
+of customers.
 
 %---------------------------------------------------------------------------------------------%
 % what are the main contributions of this thesis
@@ -88,7 +88,7 @@ We have the following contribution.
     \item Extend TAS to support groups
     \item Use OVS to steer packets from TAS
     \item provide implementation which integrates TAS to OVS.
-    \item evaluate.
+    \item evaluation.
 \end{itemize}
 
 %---------------------------------------------------------------------------------------------%
