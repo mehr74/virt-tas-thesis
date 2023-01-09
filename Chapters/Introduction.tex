@@ -70,15 +70,15 @@ features on top of the modern stacks?} In response, we enrich Virt-TAS with virt
 Virt-TAS is a TCP acceleration service for virtualized environments targeted at applications 
 that require low latency and high throughput. It runs as a service alongside the host and provides 
 a fast-path for common send and receive operations, through which it reduces the virtualization 
-overheads incurred by the hypervisor and guest operating system. 
+overheads incurred by the hypervisor and guest operating system \cite{florian2021virttas}. 
 
 %---------------------------------------------------------------------------------------------%
 % briefly explain how VirtTAS works
 % TODO extend
 To avoid reinventing the wheel, instead of implementing a virtual switch from scratch, we
-complement Virt-TAS by integrating Open vSwitch (OVS). OVS is a virtual switch which is adopted
-in many data center networks. It is also a component of VMware's NSX product, used by thousands
-of customers.
+complement Virt-TAS by integrating Open vSwitch (OVS) \cite{pfaff2015design}. OVS is a virtual
+ switch which is adopted inmany data center networks. It is also a component of VMware's NSX 
+ product, used by thousands of customers \cite{tu2021revisiting}.
 
 %---------------------------------------------------------------------------------------------%
 % what are the main contributions of this thesis
