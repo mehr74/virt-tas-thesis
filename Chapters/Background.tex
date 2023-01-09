@@ -62,6 +62,7 @@ In summary, an OpenFlow switch has the following three main components:
 Further detailed specifications of an OpenFlow switch are defined by 
 \emph{Open Networking Foundation} \cite{specification2009version}. 
 
+VirtTAS supports OpenFlow interface to enable network programmability at end-host.
 
 \subsection{Open Virtual Switch (OVS)}
 \label{OVS}
@@ -124,11 +125,26 @@ deployments.
 
 Despite the limitations of OVS, we decided to integrate OVS into our shared TCP fast-path,
 and take the benefits of its long history of development and deployment. Addressing 
-theses limitations is beyond the scope of this thesis and we believe the OVS community can
+the limitations of OVS is beyond the scope of this thesis and we believe the OVS community can
 address these issues in the future works. 
 
 \subsection{Network Virtualization Platform (NVP)}
 \label{nvp}
+Network Virtualization Platform (NVP) is one of the first commercial virtualization 
+platform based on SDN that appeared with the market demand for network virtualization
+and research on Software Defined Networking (SDN) \cite{koponen2014network}. NVP was proposed 
+to address virtualization primitives such as VLAN (Virtualized L2 domain), 
+VRFs (Virtualized L3 FIB), NAT 
+(Virtualized IP address space), and MPLS (Virtualized Path) needed by VMware's users.
+
+NVP allows users to setup, and configure different virtual networks, each with
+different addressing space, independent services model, and topologies
+on top of the same physical network. NVP hides the topology of  the underlaying physical network
+from the users, and specific aspects of the forwarding devices becomes unknown for these users. 
+In NVP, a hypervisor layer translations each tenant's network configurations to 
+low-level instruction set, which can be installed by virtual switches. NVP deploys OVS
+as its virtual switch. The packets are tunneled by virtual switches over the physical network, and 
+the physical switch only transmit tunneled packets to the destination hypervisor.
 
 
 \subsection{Snap}
