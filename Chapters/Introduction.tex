@@ -67,7 +67,7 @@ high throughput and low latency.
 % TODO extend 
 \textbf{Goal} In this thesis, we ask the following question: \emph{How can we provide virtualization 
 features on top of the modern stacks?} In response, we enrich Virt-TAS with virtualization features.
-Virt-TAS is a TCP acceleration service for virtualized environments targeted at applications 
+Virt-TAS is a TCP acceleration service (TAS) for virtualized environments targeted at applications 
 that require low latency and high throughput. It runs as a service alongside the host and provides 
 a fast-path for common send and receive operations, through which it reduces the virtualization 
 overheads incurred by the hypervisor and guest operating system \cite{florian2021virttas}. 
@@ -77,24 +77,27 @@ overheads incurred by the hypervisor and guest operating system \cite{florian202
 % TODO extend
 To avoid reinventing the wheel, instead of implementing a virtual switch from scratch, we
 complement Virt-TAS by integrating Open vSwitch (OVS) \cite{pfaff2015design}. OVS is a virtual
- switch which is adopted inmany data center networks. It is also a component of VMware's NSX 
- product, used by thousands of customers \cite{tu2021revisiting}.
+switch which is deployed in many data center networks. It is also a component of VMware's NSX 
+product, used by thousands of customers \cite{tu2021revisiting}.
 
 %---------------------------------------------------------------------------------------------%
 % what are the main contributions of this thesis
 % TODO extend
-We have the following contribution.
+This thesis makes the following contributions.
 \begin{itemize}
-    \item Extend TAS to support groups
-    \item Use OVS to steer packets from TAS
-    \item provide implementation which integrates TAS to OVS.
+    \item We extend Virt-TAS memory layout to support \emph{group} terminology. Groups 
+    like target groups in EC2 are a set of VMs, which trust eachother and can share memory. 
+    \item We integrate OVS to steer packets between hypervisor, and applications. By 
+    using OVS we benefit from network programmability support through OpenFlow interface.
+    \item We further optimize the solution by leveraging fast-path processing. After processing
+    the first packet of each connection in OVS, Virt-TAS stores connection information 
+    for the flow and the following packets are processes by the fast-path
     \item evaluation.
 \end{itemize}
 
 %---------------------------------------------------------------------------------------------%
 % structure of next sections
 % TODO extend
-The rest of this thesis is organized in this order.
 
 
 
