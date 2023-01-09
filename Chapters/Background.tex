@@ -144,7 +144,13 @@ from the users, and specific aspects of the forwarding devices becomes unknown f
 In NVP, a hypervisor layer translations each tenant's network configurations to 
 low-level instruction set, which can be installed by virtual switches. NVP deploys OVS
 as its virtual switch. The packets are tunneled by virtual switches over the physical network, and 
-the physical switch only transmit tunneled packets to the destination hypervisor.
+the physical switch only transmit tunneled packets between hypervisors and gateways.
+
+Virt-TAS like NVP, enables virtualization primitivs through use of OVS at end-host. 
+NVP, focuses on providing network connectivity to VMs and network programmability 
+for operators, whereas Virt-TAS aims to supply VMs with high throughput and low latency 
+by streamlining packet processing as a service on hypervisor in addition to providing 
+the same features.
 
 
 \subsection{Snap}
