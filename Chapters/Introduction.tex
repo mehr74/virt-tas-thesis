@@ -80,6 +80,15 @@ complement Virt-TAS by integrating Open vSwitch (OVS) \cite{pfaff2015design}. OV
 switch which is deployed in many data center networks. It is also a component of VMware's NSX 
 product, used by thousands of customers \cite{tu2021revisiting}.
 
+
+NetKernel, is another system that provides network stack as a service in the cloud.
+Like Virt-TAs, Netkernel decouples the network stack from the guest OS, 
+(\emph{i}) to simplify deployment and maintenance for tenants; (\emph{ii}) to increase  
+efficiency of TCP packet processing for cloud providers. Netkernel's 
+goal is to show the feasibility of decoupling network stack from VMs, whereas Virt-TAS
+focuses on providing network virtualization features on top of decoupling network stack, and 
+offering the same isolation as current system architecture.
+
 %---------------------------------------------------------------------------------------------%
 % what are the main contributions of this thesis
 % TODO extend
@@ -87,12 +96,19 @@ This thesis makes the following contributions.
 \begin{itemize}
     \item We extend Virt-TAS memory layout to support \emph{group} terminology. Groups 
     like target groups in EC2 are a set of VMs, which trust eachother and can share memory. 
-    \item We integrate OVS to steer packets between hypervisor, and applications. By 
-    using OVS we benefit from network programmability support through OpenFlow interface.
+    Each VM in Virt-TAS is assigned to a group and a group can be assigned to multiple 
+    VMs.
+
+    \item We integrate OVS to steer packets between network interface card (NIC) on hypervisor, 
+    and applications residing on the VMs. By using OVS, we benefit from network programmability
+    support added through OpenFlow interface. Each VM in the new design is connected to OVS 
+    through a shared memory maintained by its group. TCP acceleration service on the other 
+    side connects NIC to OVS through lock free queues.
+
     \item We further optimize the solution by leveraging fast-path processing. After processing
     the first packet of each connection in OVS, Virt-TAS stores connection information 
-    for the flow and the following packets are processes by the fast-path
-    \item evaluation.
+    for the flow in its cache and the following packets are processes by the fast-path.
+
 \end{itemize}
 
 %---------------------------------------------------------------------------------------------%
