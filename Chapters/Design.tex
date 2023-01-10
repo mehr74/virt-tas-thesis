@@ -81,8 +81,11 @@ actions are applied among entries that satisfy all conditions and have the highe
 % a paragraph about the proxy connection
 
 
-
 % a paragraph about rediction of library calls 
+A userspace library redirects the POSIX socket API transparently, so that applications 
+can remain unmodified. Through this library the sockets calls are transmitted to the 
+hypervisor instead of being transfered to the VMs network stack. Furthermore, 
+By rewriting applications to use low level API of libTAS higher performance can be achieved.
 
 \section{Slow Path}
 \subsection{Virtual switching}
