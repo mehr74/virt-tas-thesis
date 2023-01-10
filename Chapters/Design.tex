@@ -52,16 +52,25 @@ to provide network virtualization features in a shared TCP fastpath.
 Similar to TAS, Virt-TAS devides the network stack into three different components:
 (\emph{i}) A fast-path running on hypervisor, (\emph{ii}) a slow-path that has components
 both on the hypervisor and the VMs, and (\emph{iii}) an application library, which 
-runs entirely on the VM side. The packets are first received by the fast-path component 
-from a physical NIC or through shared memory from applications running on VMs. The fast-path 
-either has received instruction from OVS on how to handle the received packet based on its flow or 
-it has not. In the first scenario, the fast-path applies the action provided by OVS.
-The actions ranges from dropping the packet to forwarding it to specific application connected
-to Virt-TAS or to the physical NIC. In the second 
-scenario, where fast-path has no information about the flow of the received packet,  the packet is
-delivered to OVS through lock-free shared memory. OVS can then decide how to treat 
-packets based on the OpenFlow instructions. One the other side, the application interface has the 
-responsibility to connect to Virt-TAS and implement POSIX network socket API for applications.
+runs entirely on the VM side. 
+
+Figure X depicts the overview architecture of Virt-TAS. The packets are first received 
+by the fast-path component from a physical NIC or through shared memory from applications 
+running on VMs. The fast-path either has received instruction from OVS on how to handle 
+the received packet based on its flow or it has not. In the first scenario, the fast-path 
+applies the action provided by OVS. The actions ranges from dropping the packet to forwarding 
+it to specific application connected to Virt-TAS or to the physical NIC. In the second 
+scenario, where fast-path has no information about the flow of the received packet,  the 
+packet is delivered to OVS through lock-free shared memory. OVS can then decide how to treat 
+packets. On the other side, the application interface has the responsibility to initialize the 
+connection to Virt-TAS and implement POSIX network socket API for applications.
+
+By integrating OVS, we can control and program the forwarding dataplane through 
+OpenFlow protocol. OpenFlow enables network operators to add, remove, update entries,
+and to monitor statistics on flow tables. OVS takes OpenFlow tables from an SDN
+controller, matches the received packets to these flow tables,and applies 
+all actions needed to be taken. The outcome is then cached by the fast-path component
+of Virt-TAS.
 
 
 \section{Slow Path}
