@@ -1,34 +1,62 @@
 %!TEX root = ../Thesis.tex
 
 \section{Objectives}
-VirtTAS is designed to fulfill the following goals:
+Virt-TAS is designed to fulfill the following goals:
 
 \begin{itemize}
     \item \textbf{Low latency and high throughput} % write about TAS
-    Modern datacenters host distributed data-intensive applications, that require low latency and high throughput. Workloads of these applications consist of short-lived flows with stringent low latency requirements, as well as long-lived flows with high throughput needs. VirtTAS should provide the latency and throughput needs of these applications, and it should enable cloud providers to maintain Service Level Agreements (SLAs). 
+    Modern datacenters host distributed data-intensive applications, that require 
+    low latency and high throughput. Workloads of these applications consist of short-lived 
+    flows with stringent low latency requirements, as well as long-lived flows with 
+    high throughput needs. VirtTAS should provide the latency and throughput needs 
+    of these applications, and it should enable cloud providers to maintain Service 
+    Level Agreements (SLAs). 
     
     \item \textbf{Compatibility} % write about openflow
-    The networking interfaces should be unmodified so that applications residing on the VMs could benefit from VirtTAS without any modification.
-    Moreover, to make VirtTAS programmable through existing state-of-the-art network controllers, it should support OpenFlow API.
+    The networking interfaces should be unmodified so that applications residing on 
+    the VMs could benefit from VirtTAS without any modification.
+    Moreover, to make VirtTAS programmable through existing state-of-the-art network controllers,
+    it should support OpenFlow API.
+
     \item \textbf{Mobility} % write about not being coupled to a physical network
-    VMs could be migrated to different locations, thus VirtTAS should allow VMs to continue communicating over the network, despite their migration. VirtTAS should decouple applications from physical networking infrastructures at their location.
+    VMs could be migrated to different locations, thus VirtTAS should allow VMs to continue 
+    communicating over the network, despite their migration. VirtTAS should decouple applications 
+    from physical networking infrastructures at their location.
+
     \item \textbf{High utilization}
-    As VirtTAS is sharing fate with the hypervisor, resource conversation is highly critical. VirtTAS should maximize resource utilization to maintain precious resources for the main goal of the hypervisor, running user workloads.
+    As VirtTAS shares fate with the hypervisor, resource conversation is highly critical. 
+    VirtTAS should maximize resource utilization to maintain precious resources for the 
+    main goal of the hypervisor, running user workloads.
+
     \item \textbf{Scalability} % using a shared tcp fast-path
-    Scalability becomes a challenging problem when different tenants with different network topologies and networking demands reside on the same hypervisor. VirtTAS should keep up with the increasing number of flows. It should also support an increasing number of flow updates from a controller.
+    Scalability becomes a challenging problem when different tenants with different network 
+    topologies and networking demands reside on the same hypervisor. VirtTAS should keep up 
+    with the increasing number of flows. It should also support an increasing number of flow 
+    updates from a controller.
+
     \item \textbf{Isolation} 
-    Applications residing on one VM must be prevented to access packets from other VMs. They should not be able to violate other tenants' SLAs. Thus, VirtTAS should provide the same isolation as the current architecture.
+    Applications residing on one VM must be prevented to access packets from other VMs. 
+    They should not be able to violate other tenants' SLAs. Thus, VirtTAS should provide 
+    the same isolation as the current architecture.
+
 \end{itemize}
 
-
+\section{Challenges}
 
 \section{Design principles}
-To achieve the aforementioned goals, we benefit from a set of design principles to provide network virtualization features in a shared TCP fastpath.
-
+To achieve the aforementioned goals, we benefit from a set of design principles 
+to provide network virtualization features in a shared TCP fastpath.
 
 \section{Virt-TAS Architecture Overview}
 
-\section{Fast Path}
-
 \section{Slow Path}
+\subsection{Virtual switching}
+\subsection{Proxy server on hypervisor}
+\subsection{Proxy guest on VMs}
+\subsection{Application Interface}
 
+\section{Fast Path}
+\subsection{Connection setup}
+\subsection{OpenFlow action caching}
+
+\section{Application library}
