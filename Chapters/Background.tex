@@ -139,8 +139,8 @@ VRFs (Virtualized L3 FIB), NAT
 
 NVP allows users to setup, and configure different virtual networks, each with
 different addressing space, independent services model, and topologies
-on top of the same physical network. NVP hides the topology of  the underlaying physical network
-from the users, and specific aspects of the forwarding devices becomes unknown for these users. 
+on top of the same physical network. It hides the topology of  the underlaying physical network
+from the users, and specific aspects of the forwarding devices becomes unknown for the users. 
 In NVP, a hypervisor layer translations each tenant's network configurations to 
 low-level instruction set, which can be installed by virtual switches. NVP deploys OVS
 as its virtual switch. The packets are tunneled by virtual switches over the physical network, and 
@@ -211,5 +211,4 @@ they have not explored exposing network virtualization features to network provi
 Therefore the cloud provider would hesitate using this approach. % TODO polish
 
 VirtTAS solves the issue in another manner. It focuses both on providing virtualization 
-
 features and solving the isolation issues that might occur in this system. % TODO polish
