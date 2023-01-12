@@ -71,7 +71,7 @@ Conventional virtual switches are concerned only with providing a basic network 
 for VMs through L2 networks. This was changed with the advent of network virtualization. 
 Today's virtual switches provide most network services for VMs, and the physical networks 
 only transmit IP-tunneled packets. Therefore, VMs are no longer tightly connected to physical 
-datacenter networks and the workloads benefit from higher scalability and mobilifty.
+datacenter networks and the workloads benefit from higher scalability and mobility.
 
 As the complexity of network virtualization increased, the need for a production-level 
 multi-layer virtual switch became a necessity. Open vSwitch (OVS) was designed and implemented 
@@ -107,19 +107,21 @@ community, there are a few shortcomings which makes it not suitable for large sc
 deployments.
 
 \begin{enumerate}
-    \item \textbf{Explicit tunnel interface.} OVS adds another interface to setup encap and 
-    decap policies and to change it we need to change the vswitch :D % TODO polish
+    \item \textbf{Explicit tunnel interface.} OVS uses an extra interface to setup tunneling
+    actions, and it hardcodes models of tunneling to dataplane, rather than enabling
+    a controller to specify details of tunneling. Therefore, adding complicated tunneling 
+    logics, such as ECMP routing, is difficult with OVS. 
 
     \item \textbf{No support for multi-controller model.} In a multi-controller 
     software-defined network, a virtual switch transmits in-bound packets in the reverse 
     direction of out-bound packets to make the states consistent, whereas OVS only supports forward transmission. 
 
     \item \textbf{No support for stateful actions} Actions are not stateful, there are 
-    trackers supported by OVS but it does not support stateful actiosn %TODO polish 
+    trackers supported by OVS but it does not support stateful actions. %TODO polish 
 
-    \item \textbf{Performance} Packets that are not in the tables should go through the 
-    slowpath and then to controller this makes it vulnerable to DDoS attach and cache 
-    polution.  %TODO polish 
+    \item \textbf{Performance} Packets that are not matched in the fast-path cache are 
+    handled by the slowpath and in specific cases, these packets are forwarded to a 
+    controller. This makes OVS vulnerable to DDoS attacks and cache polution.  %TODO polish 
 
 \end{enumerate}
 
@@ -184,17 +186,63 @@ networking stack, it provides higher throughput.
 \subsection{Virtual Filtering Platform (VFP)}
 \label{vfp}
 
+% a paragraph about the overview of VFP
+Microsoft Azure has deployed Virtual Filtering Platform (VFP) as its programmable 
+virtual switch on more than 1M hosts to provide virtualization features 
+\cite{firestone2017vfp}. VFP extends Microsoft Hyper-V's switch 
+\cite{hyperv} with the switch logic, and it implements match and actions tables 
+with multiple layers to support multi-controller programmability. VFP takes 
+advantage of a programming model, which unlike OpenFlow consists of complex actions.
+
+% benefits of vfp
+The key advantage of VFP is its performance which was made because of just in time compiler
+and metadata parsing and touching packet once all decisions are made. 
+
+% a paragraph to connects virttas with vfp
+Unfortunately the implementation details of VFP is not publicly available and we cannot 
+evaluate performance benefits of extending VFP to streamline packet processing on endhost. 
+Nevertheless,  we beleive the main idea is still applicable to VFP. 
+We believe by providing packet processing as a service at 
+hypervisor, the tenants do not need to provision higher than their demands.
+
 
 %---------------------------------------------------------------------------------------------%
 \section{TCP acceleration}
 
+TCP acceleration techniques are used in data center networking to increase TCP's performance
+on high-bandwidth, low-latency networks. Some of these techniques are as follows:
+\begin{itemize}
+    \item \textbf{TCP/IP Offload Engine (TOE).} TOEs are hardward-based solutions that offloads
+    TCP/IP processing from the host CPU to a dedicated hardware on network interface card 
+    (NIC), therefore lowering CPU usage and accelerating network performance
+    \cite{shashidhara2022flextoe,wu2006design,kant2003tcp,freimuth2005server}.
+    \item \textbf{Kernel bypass.} Kernel bypass is another technique used to directly access 
+    the NIC from the application in userspace. This technique enables low latency 
+    communication between the application and the NIC, as it eliminates the need for 
+    the data to pass through the kernel's network stack 
+    \cite{chen2018survey, kaufmann2019tas, marty2019snap}. 
+    \item \textbf{Congestion Control.} Different congestion control are used to manage
+    network traffic and to prevent congestion and data loss \cite{mittal2015timely,kumar2020swift}. 
+\end{itemize}
+
+In this section, we focus on kernel bypass technique and we elaborate the 
+TCP Acceleration as Service (TAS) project \cite{kaufmann2019tas}.
+
+
+
 \subsection{TCP Acceleration as Service (TAS)}
+% an overview of TAS
+TAS is an acceleration service, which splits TCP packet processing 
+into two components: a light weight fast-path optimized for common case client-server RPCs,
+and a heavier stack slow-path which drives congestion control, connection steup. 
 
+% a paragraph about fast-path
+The fast-path benefits from different streamlining opportunity. The user can scale the 
+dedicated cores for efficient and fast processing of packets.
 
-\subsection{IX: A dataplane Operating System for High Throughput and Low Latency}
+% a paragraph about slow-path
 
-
-\subsection{mTCP}
+% a paragraph about how we benefit from TAS in our project.
 
 
 %---------------------------------------------------------------------------------------------%
