@@ -29,8 +29,8 @@ x_axis = np.arange(len(labels))
 print(x_axis)
 print(nm1)
 ax.bar(x_axis- width, nm1, width, label='Monolithic TAS', color='#001a00')
-ax.bar(x_axis, nm2, width, color='#006600', label='Grouped-TAS ', hatch='+'*5)
-ax.bar(x_axis + width, nm3, width, color='#339933', label='Virt-TAS', hatch='/'*5)
+ax.bar(x_axis, nm2, width, color='#006600', label='Grouped-TAS ', hatch='+'*3)
+ax.bar(x_axis + width, nm3, width, color='#339933', label='Virt-TAS', hatch='/'*3)
 
 
 ax.set_ylabel('Throughput (mbps)')
