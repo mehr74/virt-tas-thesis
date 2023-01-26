@@ -54,6 +54,16 @@ Similar to TAS, Virt-TAS devides the network stack into three different componen
 both on the hypervisor and the VMs, and (\emph{iii}) an application library, which 
 runs entirely on the VM side. 
 
+
+
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.324]{../Figures/design.bigpicture.pdf}
+    \caption{Virt-TAS big picture}
+    \label{fig:overhead.throughput}
+\end{figure}
+
+
 % a paragraph about the overview of ovs integration
 Figure X depicts the overview architecture of Virt-TAS. The packets are first received 
 by the fast-path component from a physical NIC or through shared memory from applications 

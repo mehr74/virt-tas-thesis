@@ -4,8 +4,8 @@ PAPER_NAME:=Thesis
 TEX := $(shell find ./ -type f -name "*.tex")
 CLS := $(shell find ./ -type f -name "*.cls")
 BIB := $(shell find ./ -type f -name "*.bib")
-FIG := $(shell find ./figures -type f -name "*.pdf")
-GNUPLOTS := $(addsuffix .pdf,$(basename $(shell find ./figures -type f -name "*.gnuplot" | grep -v common)))
+FIG := $(shell find ./Figures -type f -name "*.pdf")
+GNUPLOTS := $(addsuffix .pdf,$(basename $(shell find ./Figures -type f -name "*.gnuplot" | grep -v common)))
 PAPER_DEPS := $(TEX) $(CLS) $(BIB) $(FIG) $(GNUPLOTS)
 LATEX := python3 ./bin/latexrun --color auto --bibtex-args="-min-crossrefs=9000"
 

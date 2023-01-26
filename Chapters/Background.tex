@@ -1,20 +1,51 @@
 %---------------------------------------------------------------------------------------------%
 \section{Network Virtualization}
 
+Network virtualization has gained an extreme importance in data center networking
+as it enables cloud providers to enhance the flexibility, scalability 
+and resource utilization of the network infrastructure. Multiple virtual 
+networks can be deployed on a single physical infrastructure with 
+network virtualization. 
 
-Configuring the traditional networks was a hard and time-consuming task. Each networking 
-vendor had its own interface, and configuring each device required the corresponding 
-expertise. In addition to that, adding or removing a machine required multiple configurations 
-to be set up in a box-by-box manner, which introduces an excessive operation overhead and 
-increases the risk of misconfiguration \cite{cearley2013top, marty2019snap}.
+In this section, we first explain what network virtualization is and how it is 
+different from the conventional non-virtualized envrionments 
+(Section \ref{sec:nonvirt.vs.virt}). We then explore different network virtualization
+platforms and investigate their shortcommings in providing network virtualization 
+for low-latency and high-throughput data center applications (Section \ref{sec:network.virt.platform}).
 
-Network virtualization aims to solve these issues by separating the control logic 
-(control-plane) from the forwarding hardware (data-plane) \cite{koponen2014network, 
-caesar2005design, casado2007ethane, gude2008nox, koponen2010onix, mckeown2008openflow}. 
+
+\subsection{Non-virtualized vs. virtualized network environments}
+\label{sec:nonvirt.vs.virt}
+
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.625]{../Figures/non-virt-vs-virt.pdf}
+    \caption{Non-virtualized vs. virtualized network environment}
+    \label{fig:overhead.throughput}
+\end{figure}
+
+
+
+In a non-virtualized network environment, networking components are directly tied 
+to the underlying physical hardware. Each network component, such as a switch or router, 
+corresponds to a specific physical device, and the network as a whole is limited by the 
+available hardware resources. This makes configuration a hard and 
+time-consuming task. Each networking vendor has its own interface, and configuring each 
+device requires the corresponding expertise. In addition to that, adding or removing a machine 
+requires multiple configurations to be set up in a box-by-box manner, which introduces 
+an excessive operation overhead and increases the risk of misconfiguration 
+\cite{cearley2013top, marty2019snap}.
+
+Network virtualization aims to solve these issues by separating and abstracting 
+network configuration from the underlying hardware.
 Through a virtualization layer, users can create virtual networks, with arbitrary service 
-models, topologies, and addressing scheme, using the same physical network. Furthermore, 
+models, topologies, and addressing scheme, on top of the same physical network devices. Furthermore, 
 a global abstraction enables management and configuration of these virtual networks 
 \cite{mckeown2008openflow}.
+
+
+\subsection{Network virtualization platforms}
+\label{sec:network.virt.platform}
 
 To provide network virtualization for cloud tenants, public cloud providers, such as Amazon 
 Web Services (AWS), Microsoft Azure, and Google Cloud Platform (GCP), have taken different 
