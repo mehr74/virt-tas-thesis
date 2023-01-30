@@ -99,7 +99,23 @@ By rewriting applications to use low level API of libTAS higher performance can 
 
 \section{Slow Path}
 \subsection{Virtual switching}
-\subsection{Proxy server on hypervisor}
+\subsection{Proxy Host on hypervisor}
+
+The Proxy Host is a service that operates on the hypervisor as an intermediary between virtual 
+machines and the TAS. It uses the libtas library to connect to the running TAS instance on 
+the hypervisor. The Proxy Host determines the number of supported groups from the TAS instance 
+and sets up a UNIX socket for each group. The path of the created socket for the desired group 
+is then used to launch virtual machines with fast-path support.
+% [caption={qemu system x86_64 command with ivshmem-doorbell and socket to proxy host communication},captionpos=b^d%i]
+\begin{lstlisting}[caption={QEMU system x86-64 command with ivshmem-doorbell and socket interface for connection to proxy host},captionpos=b]
+qemu-system-x86_64 \
+...
+-chardev socket,path="PROXY_SOCKET_PATH",id="tas" \
+-device ivshmem-doorbell,vectors=1,chardev="tas" \ 
+...
+\end{lstlisting}
+
+runs a request to a server, it is sent to the proxy server first. The proxy server then makes a request to the server on behalf of the client, and returns the response back to the client.
 \subsection{Proxy guest on VMs}
 \subsection{Application Interface}
 

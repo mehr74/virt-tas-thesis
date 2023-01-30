@@ -3,33 +3,25 @@
 
 Network virtualization has gained an extreme importance in data center networking
 as it enables cloud providers to enhance the flexibility, scalability 
-and resource utilization of the network infrastructure. Multiple virtual 
-networks can be deployed on a single physical infrastructure with 
-network virtualization. 
+and resource utilization of the network infrastructure. With network virtualization
+multiple virtual networks can be deployed on a single physical infrastructure. In this 
+section, we explain what virtualized network environments are and how they are
+different from the conventional non-virtualized envrionments.
 
-In this section, we first explain what network virtualization is and how it is 
-different from the conventional non-virtualized envrionments 
-(Section \ref{sec:nonvirt.vs.virt}). We then explore different network virtualization
-platforms and investigate their shortcommings in providing virtualization features
-for low-latency and high-throughput data center applications (Section \ref{sec:network.virt.platform}).
-
-
-\subsection{Non-virtualized vs. virtualized network environments}
-\label{sec:nonvirt.vs.virt}
 
 \begin{figure}
     \centering
     \includegraphics[scale=0.625]{../Figures/non-virt-vs-virt.pdf}
     \caption{Non-virtualized vs. virtualized network environment}
-    \label{fig:overhead.throughput}
+    \label{fig:virt.vs.nonvirt}
 \end{figure}
 
 
 
 In a non-virtualized network environment, networking components are directly tied 
-to the underlying physical hardware. Each network component, such as a switch or router, 
-corresponds to a specific physical device, and the network as a whole is limited by the 
-available hardware resources. This makes configuration a hard and 
+to the underlying physical hardware. Each networking component, such as a switch or router, 
+corresponds to a specific physical device. Therefore, the network as a whole is limited by the 
+available hardware resources. Furthermore, configuration in these environments is a hard and 
 time-consuming task. Each networking vendor has its own interface, and configuring each 
 device requires the corresponding expertise. In addition to that, adding or removing a machine 
 requires multiple configurations to be set up in a box-by-box manner, which introduces 
@@ -37,14 +29,21 @@ an excessive operation overhead and increases the risk of misconfiguration
 \cite{cearley2013top, marty2019snap}.
 
 Network virtualization aims to solve these issues by separating and abstracting 
-network configuration from the underlying hardware.
+network infrastructure from the underlying hardware.
 Through a virtualization layer, users can create virtual networks, with arbitrary service 
 models, topologies, and addressing scheme, on top of the same physical network devices. Furthermore, 
 a global abstraction enables management and configuration of these virtual networks 
 \cite{mckeown2008openflow}.
 
+Figure \ref{fig:virt.vs.nonvirt} illustrates differences between a non-virtualized and a
+virtualized networking environment. In a non-virtualized setup, the kernel directly routes 
+packets from applications to a physical Network Interface Card (pNIC), binding the applications 
+to the physical networking components. Whereas, in a virtualized setup, software-based virtual NICs (vNICs) 
+and virtual switches (vSwitches) are used to abstract and separate packets from the underlying hardware through an 
+encapsulation layer. Moreover, a network controller in collaboration with virtual switches configures
+policies for encapsulation and forwarding decisions in virtualized environments.
 
-\subsection{Network virtualization platforms}
+\section{Network virtualization platforms}
 \label{sec:network.virt.platform}
 
 To provide network virtualization for cloud tenants, public cloud providers, such as Amazon 
@@ -57,6 +56,33 @@ and Open Virtual Switch (Section \ref{OVS}). We then elaborate on the state-of-t
 virtualization used by VMWare (Section \ref{nvp}), Google (Section \ref{snap}), and 
 Microsoft(Section \ref{vfp}).
 
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|}
+    \hline
+    & \begin{tabular}{@{}c@{}}Virtualization\\ support\end{tabular} & 
+    \begin{tabular}{@{}c@{}}Multiplexing \\ benefits \end{tabular} & 
+    \begin{tabular}{@{}c@{}}Hardware \\ offload \end{tabular} & 
+    \begin{tabular}{@{}c@{}} TCP acceleration \\ on hypervisor \end{tabular}\\ [0.5ex]
+
+    \hline\hline
+    NVP & \cmark & \xmark & \xmark &  \xmark \\ [1ex]
+    \hline
+    Snap & \cmark & \xmark & \xmark & \xmark \\ [1ex]
+    \hline
+    VFP & \cmark & \xmark & \cmark &  \xmark \\ [1ex]
+    \hline
+    TAS  & \xmark & \xmark & FlexTOE\cite{shashidhara2022flextoe} & \cmark \\ [1ex]
+    \hline
+    NetKernel & \cmark & \cmark & \xmark & \xmark \\ [1ex]
+    \hline
+    VirtTAS & \cmark & \cmark &  FlexTOE\cite{shashidhara2022flextoe} & \cmark \\ [1ex]
+    \hline
+    \end{tabular}
+    \caption{Table Title}
+    \label{table:label}
+\end{table}
+    
 \subsection{OpenFlow}
 \label{OpenFlow}
 \textbf{OpenFlow} was first proposed to enhance the implementation of new protocols on top 
@@ -158,7 +184,7 @@ deployments.
 
 Despite the limitations of OVS, we decided to integrate OVS into our shared TCP fast-path,
 and take the benefits of its long history of development and deployment. Addressing 
-the limitations of OVS is beyond the scope of this thesis and we believe the OVS community can
+the limitations of OVS is beyond the scope of this thesis and we believe the OVS community would
 address these issues in the future works. 
 
 \subsection{Network Virtualization Platform (NVP)}
@@ -174,7 +200,7 @@ NVP allows users to setup, and configure different virtual networks, each with
 different addressing space, independent services model, and topologies
 on top of the same physical network. It hides the topology of  the underlaying physical network
 from the users, and specific aspects of the forwarding devices becomes unknown for the users. 
-In NVP, a hypervisor layer translations each tenant's network configurations to 
+In NVP, a hypervisor layer translates each tenant's network configurations to 
 low-level instruction set, which can be installed by virtual switches. NVP deploys OVS
 as its virtual switch. The packets are tunneled by virtual switches over the physical network, and 
 the physical switch only transmit tunneled packets between hypervisors and gateways.
@@ -208,7 +234,7 @@ networking in their data centers.
 \end{enumerate}
 
 To reach the requirements of data-center networking and to mitigate the drawbacks of using 
-the kernel in the development of end-host network stack, Google has proposed Snap. Snap is 
+the kernel in the development of end-host network stack, Google has proposed Snap \cite{marty2019snap}. Snap is 
 a userspace networking system, which was initially inspired by microkernel architecture. 
 By residing in userspace, the development of new features has become faster and upgrades to
 the networking stack can be applied transparently. Moreover, in comparison to the Linux Kernel 
@@ -223,11 +249,11 @@ virtual switch on more than 1M hosts to provide virtualization features
 \cite{firestone2017vfp}. VFP extends Microsoft Hyper-V's switch 
 \cite{hyperv} with the switch logic, and it implements match and actions tables 
 with multiple layers to support multi-controller programmability. VFP takes 
-advantage of a programming model, which unlike OpenFlow consists of complex actions.
+advantage of a new programming model, which unlike OpenFlow consists of complex actions.
 
 % benefits of vfp
-The key advantage of VFP is its performance which was made because of just in time compiler
-and metadata parsing and touching packet once all decisions are made. 
+The key advantage of VFP is its performance which is enabled by using a just in time compiler,
+metadata parsing and touching packet once all decisions are made. 
 
 % a paragraph to connects virttas with vfp
 Unfortunately the implementation details of VFP is not publicly available and we cannot 
@@ -238,8 +264,8 @@ hypervisor, the tenants do not need to provision higher than their demands.
 
 
 %---------------------------------------------------------------------------------------------%
-\section{TCP acceleration}
 
+\subsection{TCP Acceleration as Service (TAS)}
 TCP acceleration techniques are used in data center networking to increase TCP's performance
 on high-bandwidth, low-latency networks. Some of these techniques are as follows:
 \begin{itemize}
@@ -256,12 +282,6 @@ on high-bandwidth, low-latency networks. Some of these techniques are as follows
     network traffic and to prevent congestion and data loss \cite{mittal2015timely,kumar2020swift}. 
 \end{itemize}
 
-In this section, we focus on kernel bypass technique and we elaborate the 
-TCP Acceleration as Service (TAS) project \cite{kaufmann2019tas}.
-
-
-
-\subsection{TCP Acceleration as Service (TAS)}
 % an overview of TAS
 TAS is an acceleration service, which splits TCP packet processing 
 into two components: a light weight fast-path optimized for common case client-server RPCs,
@@ -277,17 +297,27 @@ dedicated cores for efficient and fast processing of packets.
 
 
 %---------------------------------------------------------------------------------------------%
-\section{Related works}
 \subsection{NetKernel}
 Netkernel is another system that offers network stack as a service in virtualized 
-environments. Like VirtTAS, Netkernel decouples the network stack from the VMs. Therefore, 
-(\emph{i}) cloud users could benefit from fast deployment and maintenance of the network 
-stack, (\emph{ii}) cloud providers can improve the efficiency of TCP stack processing stacks 
+environments. Similar to VirtTAS, Netkernel decouples the network stack from the VMs. Thus, 
+(\emph{i}) tenants benefit from fast deployment and maintenance of the network 
+stack, and (\emph{ii}) cloud providers are able improve the efficiency of TCP stack processing stacks 
 transparently. 
 
-Netkernel focuses on showing the feasibility of this approach to the research community but 
-they have not explored exposing network virtualization features to network providers. 
-Therefore the cloud provider would hesitate using this approach. % TODO polish
+In the design of Netkernel, the BSD socket APIs are redirected to a full NetKernel socket implementation through 
+a library called \emph{GuestLib}. The library is deployed as a kernel patch, and it is 
+the only modification made to the users' virtual machines. Network stacks 
+are set up by the operator on different virtual machines inside the same server as \emph{Network Stack Modules (NSMs)}. 
+The NSMs are connected from one side to users' virtual machines through inter-VM shared-memory 
+and from the other side to a virtual switch through conventional tap devices. 
 
-VirtTAS solves the issue in another manner. It focuses both on providing virtualization 
-features and solving the isolation issues that might occur in this system. % TODO polish
+
+The design of NetKernel is limited by 
+processing network stack inside virtual machines. Furthermore, the full 
+performance benefits claimed by NetKernel is only achieved when cloud providers deploy 
+Single Root I/O virtualization (SR-IOV) in their datacenter. SR-IOV ties applications to the underlying hardware, and 
+is not favorable to all cloud providers. Whereas, VirtTAS focuses on improving the performance of 
+packet processing for application residing on user virtual machines through streamlining the packet 
+processing on the hypervisor. VirtTAS benefits from the multi-core achitecture and uses kernel-bypass to 
+achieve line-rate performance.
+

@@ -39,7 +39,7 @@ ax.set_ylim(100, 40000)
 
 ax.set_xticks(x_axis)
 ax.set_xticklabels(labels)
-ax.set_title('Average throughput of VMs')
+ax.set_title('Average throughput')
 ax.set_xlabel('Message size (byte)')
 ax.legend()
 

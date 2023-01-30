@@ -26,6 +26,10 @@
 \usepackage{framed}
 \usepackage{hyperref}
 \usepackage{todonotes}
+\usepackage{amssymb}% http://ctan.org/pkg/amssymb
+\usepackage{pifont}% http://ctan.org/pkg/pifont
+\newcommand{\cmark}{\ding{51}}%
+\newcommand{\xmark}{\ding{55}}%
 \reversemarginpar
 \presetkeys{todonotes}{inline, size=\tiny, prepend, caption={TODO}}{}
 \usepackage{listings}
@@ -136,11 +140,6 @@
 \clearpage
 
 %% The Dedication page
-%% ----------------------------------------------------------------
-\doifnotproposal{
-  \thispagestyle{empty}  % Page style needs to be empty for this page
-  \dedicatory{Dedicated to WHATEVER.}
-}
 
 \mainmatter	  % Begin normal, numeric (1,2,3...) page numbering
 
