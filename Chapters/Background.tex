@@ -12,7 +12,7 @@ different from the conventional non-virtualized envrionments.
 \begin{figure}
     \centering
     \includegraphics[scale=0.625]{../Figures/non-virt-vs-virt.pdf}
-    \caption{Non-virtualized vs. virtualized network environment}
+    \caption{Non-virtualized vs. virtualized network environments}
     \label{fig:virt.vs.nonvirt}
 \end{figure}
 
@@ -43,7 +43,7 @@ and virtual switches (vSwitches) are used to abstract and separate packets from 
 encapsulation layer. Moreover, a network controller in collaboration with virtual switches configures
 policies for encapsulation and forwarding decisions in virtualized environments.
 
-\section{Network virtualization platforms}
+\section{Related works}
 \label{sec:network.virt.platform}
 
 To provide network virtualization for cloud tenants, public cloud providers, such as Amazon 
@@ -54,7 +54,9 @@ a software-only approach \cite{marty2019snap}. In this section, we first introdu
 open-source projects in network virtualization, namely OpenFlow (Section \ref{OpenFlow}), 
 and Open Virtual Switch (Section \ref{OVS}). We then elaborate on the state-of-the art network 
 virtualization used by VMWare (Section \ref{nvp}), Google (Section \ref{snap}), and 
-Microsoft(Section \ref{vfp}).
+Microsoft(Section \ref{vfp}). Finally, we explore two recent academic project:
+TCP Acceleration as an OS Service (TAS) (Section \ref{tas}), and NetKernel (Section \ref{netkernel}).
+
 
 \begin{table}[h]
     \centering
@@ -79,7 +81,7 @@ Microsoft(Section \ref{vfp}).
     VirtTAS & \cmark & \cmark &  FlexTOE\cite{shashidhara2022flextoe} & \cmark \\ [1ex]
     \hline
     \end{tabular}
-    \caption{Table Title}
+    \caption{Comparison of different network stack architectures}
     \label{table:label}
 \end{table}
     
@@ -266,6 +268,7 @@ hypervisor, the tenants do not need to provision higher than their demands.
 %---------------------------------------------------------------------------------------------%
 
 \subsection{TCP Acceleration as Service (TAS)}
+\label{tas}
 TCP acceleration techniques are used in data center networking to increase TCP's performance
 on high-bandwidth, low-latency networks. Some of these techniques are as follows:
 \begin{itemize}
@@ -298,6 +301,7 @@ dedicated cores for efficient and fast processing of packets.
 
 %---------------------------------------------------------------------------------------------%
 \subsection{NetKernel}
+\label{netkernel}
 Netkernel is another system that offers network stack as a service in virtualized 
 environments. Similar to VirtTAS, Netkernel decouples the network stack from the VMs. Thus, 
 (\emph{i}) tenants benefit from fast deployment and maintenance of the network 

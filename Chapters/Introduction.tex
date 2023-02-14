@@ -2,7 +2,7 @@
 
 %---------------------------------------------------------------------------------------------%
 % a paragraph about virtualization, that is widely used
-Virtualization has gain a lot of popularity during the last two decades. Enabling fast 
+Virtualization has become increasingly popular over the last two decades. Enabling fast 
 provisioning, increasing the availability time, and reducing the maintenance costs
 for users are a few reasons of the gained popularity. Moreover, by multiplexing 
 multiple virtual machines (VMs) on a same physical server less enegry gets consumed, 
@@ -58,7 +58,7 @@ their tenants and applications still use the conventional TCP packet processing.
 \textbf{Implication II.} Cloud tenants are only concerned with performance of their applications,
 and they do not want the maintenance of the network stack to fallout on their shoulders. Deploying 
 new packet processing stacks requires extensive testing and comes with the risk of 
-misconfigurations. Therefore, cloud tenants hesitate to deploy the techniques in trade with
+misconfigurations. Therefore, cloud tenants hesitate to deploy the new techniques in trade with
 high throughput and low latency.
 
 %---------------------------------------------------------------------------------------------%
@@ -77,46 +77,61 @@ overheads incurred by the hypervisor and guest operating system \cite{florian202
 % TODO extend
 To avoid reinventing the wheel, instead of implementing a virtual switch from scratch, we
 complement Virt-TAS by integrating Open vSwitch (OVS) \cite{pfaff2015design}. OVS is a virtual
-switch which is deployed in many data center networks. It is also a component of VMware's NSX 
+switch that is deployed in many data center networks. It is also a component of VMware's NSX 
 product, used by thousands of customers \cite{tu2021revisiting}.
 
 
 NetKernel, is another system that provides network stack as a service in the cloud
 \cite{niu2021netkernel, niu2017network}.
-Like Virt-TAs, Netkernel decouples the network stack from the guest OS, 
-(\emph{i}) to simplify deployment and maintenance for tenants, (\emph{ii}) to increase  
+Like Virt-TAS, Netkernel decouples the network stack from the guest OS, 
+(\emph{i}) to simplify deployment and maintenance for tenants, and (\emph{ii}) to increase  
 efficiency of TCP packet processing for cloud providers. Netkernel's 
 goal is to show the feasibility of decoupling network stack from VMs, whereas Virt-TAS
-focuses on providing network virtualization features on top of decoupling network stack, and 
-offering the same isolation as current system architecture.
+focuses on providing efficient packet processing while providing network virtualization 
+features on top of decoupling network stack.
 
 %---------------------------------------------------------------------------------------------%
 % what are the main contributions of this thesis
 % TODO extend
 This thesis makes the following contributions.
 \begin{itemize}
-    \item We extend Virt-TAS memory layout to support \emph{group} terminology. Groups 
-    like target groups in Amazon EC2 \cite{ec2target} are a set of VMs, which trust 
-    eachother and can share memory. 
-    Each VM in Virt-TAS is assigned to a group and a group can be assigned to multiple 
-    VMs.
+    \item 
+    We have made an extension to the memory layout of Virt-TAS to incorporate the 
+    concept of \emph{groups}. Inspired by Amazon EC2's target groups \cite{ec2target}
+    , a group in Virt-TAS is a set of virtual machines (VMs) that trust each other and 
+    can share memory. In this design, each VM in Virt-TAS is assigned to a group, 
+    and a group can be assigned to multiple VMs. This extension improves the flexibility 
+    and scalability of the Virt-TAS system and allows for more efficient memory sharing
+     among VMs.
 
-    \item We integrate OVS to steer packets between network interface card (NIC) on hypervisor, 
-    and applications residing on the VMs. By using OVS, we benefit from network programmability
-    support added through OpenFlow interface. Each VM in the new design is connected to OVS 
-    through a shared memory maintained by its group. TCP acceleration service on the other 
-    side connects NIC to OVS through lock free queues.
+    \item We integrate OVS to a TCP Acceleration Service (TAS) to leverage the 
+    network programmability features provided by the OpenFlow interface. In the new design,
+    each VM is connected to OVS through a shared memory, managed by TAS.
+    TAS, on the other hand, facilitates communication between the NIC and OVS, as well as 
+    between applications on VMs and the hypervisor, through lock-free queues on shared memories.
+    The design enables us to take advantage 
+    of OVS's network programmability capabilities and benefit from improved network performance 
+    through streamlininig TCP packet processing enabled by TAS.
 
-    \item We further optimize the solution by leveraging fast-path processing. After processing
-    the first packet of each connection in OVS, Virt-TAS stores connection information 
-    for the flow in its cache and the following packets are processed by the fast-path.
+    \item As a further optimization, we leverage fast-path processing in our solution. 
+    Virt-TAS processes the first packet of each connection in Open vSwitch (OVS) and 
+    stores the connection information for the flow in the cache of TAS for bridge-only 
+    connections. The subsequent packets utilize the fast-path processing. 
+    This optimization results in improved performance and reduced overhead in 
+    the processing of network flows. 
 
 \end{itemize}
 
 %---------------------------------------------------------------------------------------------%
 % structure of next sections
 % TODO extend
-
-
-
+The remainder of this thesis is structured as follows: Chapter 2
+provides a comprehensive background on network virtualization,
+including a review of the state-of-the-art solutions. Chapter 3
+delves into the design of Virt-TAS, as well as outlining the 
+design requirements. Chapter 4 explains the implementation of 
+Virt-TAS. In chapter 5, we evaluate Virt-TAS based on three 
+predefined requirements. Finally, chapter 6 provides a 
+conclusion of our work, summarizing our findings
+and contributions to the field of network virtualization.
 
