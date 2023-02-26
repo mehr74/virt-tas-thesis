@@ -82,8 +82,21 @@ TCP Acceleration as an OS Service (TAS) (Section \ref{tas}), and NetKernel (Sect
     \hline
     \end{tabular}
     \caption{Comparison of different network stack architectures}
-    \label{table:label}
+    \label{table:compare}
 \end{table}
+
+Table \ref{table:compare}  presents a comparison of the different approaches, highlighting 
+their level of support and benefits across the following four categories: 
+\emph{(i)} Native virtualization support, \emph{(ii)} Multiplexing 
+of workloads from different VMs, \emph{(iii)} capability to support hardware offloads, and 
+\emph{(iv)} enhanced efficiency of packet processing by leveraging acceleration service. 
+
+As shown in the table, VirtTAS offers native virtualization support, as well as the 
+ability to multiplex workloads among different virtual machines and process packets 
+efficiently by utilizing acceleration services. Moreover, recent research on offloading 
+TCP acceleration to hardware \cite{shashidhara2022flextoe} could be employed to further 
+enhance VirtTAS by taking advantage of hardware support.
+
     
 \subsection{OpenFlow}
 \label{OpenFlow}
