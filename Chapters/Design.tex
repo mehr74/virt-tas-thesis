@@ -5,12 +5,12 @@ Virt-TAS is designed to fulfill the following goals:
 
 \begin{itemize}
     \item \textbf{Low latency and high throughput} % write about TAS
-    Modern datacenters host distributed data-intensive applications, that require 
+    Modern data-centers host distributed data-intensive applications, that require 
     low latency and high throughput. Workloads of these applications consist of short-lived 
     flows with stringent low latency requirements, as well as long-lived flows with 
     high throughput needs. VirtTAS should provide the latency and throughput needs 
-    of these applications, and it should enable cloud providers to maintain Service 
-    Level Agreements (SLAs). 
+    of these applications, and it should enable cloud providers to offer and maintain
+    Service Level Agreements (SLAs). 
     
     \item \textbf{Compatibility} % write about openflow
     The networking interfaces should be unmodified so that applications residing on 
@@ -18,14 +18,19 @@ Virt-TAS is designed to fulfill the following goals:
     Moreover, to make VirtTAS programmable through existing state-of-the-art network controllers,
     it should support OpenFlow API.
 
-    \item \textbf{Mobility} % write about not being coupled to a physical network
-    VMs could be migrated to different locations, thus VirtTAS should allow VMs to continue 
-    communicating over the network, despite their migration. VirtTAS should decouple applications 
-    from physical networking infrastructures at their location.
+    \item \textbf{Coexistence with traditional Kernel networking}
+    The new networking framework should be capable of working in conjunction with the 
+    traditional virtual machine networking system. This allows tenants to execute certain
+    workloads using the available kernel networking, while utilizing VirtTAS for
+    performance-critical workloads.
+    
+    In order to ensure seamless coexistence, it is 
+    necessary for VirtTAS to operate without adversely impacting the performance of 
+    other applications that are running on the same machine. 
 
-    \item \textbf{High utilization}
+    \item \textbf{Resource efficiency}
     As VirtTAS shares fate with the hypervisor, resource conversation is highly critical. 
-    VirtTAS should maximize resource utilization to maintain precious resources for the 
+    VirtTAS should maximize resource efficiency to maintain precious resources for the 
     main goal of the hypervisor, running user workloads.
 
     \item \textbf{Scalability} % using a shared tcp fast-path
@@ -33,7 +38,17 @@ Virt-TAS is designed to fulfill the following goals:
     topologies and networking demands reside on the same hypervisor. VirtTAS should keep up 
     with the increasing number of flows. It should also support an increasing number of flow 
     updates from a controller.
+\end{itemize}
 
+    In order to advance the VirtTAS framework, several other goals have been identified for 
+    future work. The pursuit of the following goals is expected to enhance the functionality 
+    and effectiveness of our framework. 
+    
+\begin{itemize}
+    \item \textbf{Mobility} % write about not being coupled to a physical network
+    VMs could be migrated to different locations, thus VirtTAS should allow VMs to continue 
+    communicating over the network, despite their migration. VirtTAS should decouple applications 
+    from physical networking infrastructures at their location.
     \item \textbf{Isolation} 
     Applications residing on one VM must be prevented to access packets from other VMs. 
     They should not be able to violate other tenants' SLAs. Thus, VirtTAS should provide 
@@ -58,7 +73,7 @@ runs entirely on the VM side.
 
 \begin{figure}
     \centering
-    \includegraphics[scale=0.324]{../Figures/design.bigpicture.pdf}
+    \includegraphics[scale=0.324]{../Figures/design.bigpicture.v2.pdf}
     \caption{Virt-TAS big picture}
     \label{fig:overhead.throughput}
 \end{figure}
