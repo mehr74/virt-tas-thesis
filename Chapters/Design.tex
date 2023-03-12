@@ -26,7 +26,7 @@ Virt-TAS is designed to fulfill the following goals:
     
     In order to ensure seamless coexistence, it is 
     necessary for VirtTAS to operate without adversely impacting the performance of 
-    other applications that are running on the same machine. 
+    other applications that are running on the same machine using kernel networking. 
 
     \item \textbf{Resource efficiency}
     As VirtTAS shares fate with the hypervisor, resource conversation is highly critical. 
@@ -38,6 +38,11 @@ Virt-TAS is designed to fulfill the following goals:
     topologies and networking demands reside on the same hypervisor. VirtTAS should keep up 
     with the increasing number of flows. It should also support an increasing number of flow 
     updates from a controller.
+
+    \item \textbf{Packets confidentiality}
+    Applications residing on one VM must be prevented to access packets from other VMs. 
+    VirtTAS should provide this protection of packets which may contain 
+    sensitive information from unauthorized access, disclosure, or interception.
 \end{enumerate}
 
     In order to advance the VirtTAS framework, several other goals have been identified for 
@@ -50,9 +55,9 @@ Virt-TAS is designed to fulfill the following goals:
     communicating over the network, despite their migration. VirtTAS should decouple applications 
     from physical networking infrastructures at their location.
     \item \textbf{Isolation} 
-    Applications residing on one VM must be prevented to access packets from other VMs. 
-    They should not be able to violate other tenants' SLAs. Thus, VirtTAS should provide 
-    the same isolation as the current architecture.
+    Applications of one tenant must be prevented to violate other tenants' SLAs. 
+    Thus, VirtTAS must provide 
+    an isolation mechanism that ensures this isolation exist.
 
 \end{itemize}
 
@@ -74,13 +79,13 @@ runs entirely on the VM side.
 \begin{figure}
     \centering
     \includegraphics[scale=0.324]{../Figures/design.bigpicture.v2.pdf}
-    \caption{Virt-TAS big picture}
-    \label{fig:overhead.throughput}
+    \caption{Virt-TAS design overview}
+    \label{fig:virttas.design.overview}
 \end{figure}
 
 
 % a paragraph about the overview of ovs integration
-Figure X depicts the overview architecture of Virt-TAS. The packets are first received 
+Figure \ref{fig:virttas.design.overview} depicts the overview architecture of Virt-TAS. The packets are first received 
 by the fast-path component from a physical NIC or through shared memory from applications 
 running on VMs. The fast-path either has received instruction from OVS on how to handle 
 the received packet based on its flow or it has not. In the first scenario, the fast-path 
