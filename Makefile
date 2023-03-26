@@ -1,4 +1,7 @@
+-include Makefile.local
+
 PAPER_NAME:=Thesis
+
 
 
 TEX := $(shell find ./ -type f -name "*.tex")
@@ -32,6 +35,17 @@ $(PAPER_NAME).pdf: $(PAPER_DEPS)
 clean:
 	$(LATEX) --clean-all -O .latex.out
 	@rm -frv .latex.out $(PDFS) $(GNUPLOTS) arxiv arxiv.tar.gz
+
+include .devcontainer/rules.mk
+
+help:
+	@printf "Usage: make [target]\n"
+	@printf "\n"
+	@printf "Available targets:\n"
+	@printf "\n"
+	@printf "\thelp                          Show this help message\n"
+	@printf "$(HELP_MSG)"
+	@printf "\n"
 
 #arxiv: arxiv.tar.gz
 #

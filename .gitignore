@@ -1,5 +1,7 @@
 
 # Created by https://www.gitignore.io/api/latex
+.devcontainer/directories
+.devcontainer/build-image
 
 ### LaTeX ###
 ## Core latex/pdflatex auxiliary files:
