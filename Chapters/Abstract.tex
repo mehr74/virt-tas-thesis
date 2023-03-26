@@ -2,9 +2,9 @@ TCP stack suffer from poor cache allocation,
 costly context switches, and resource sharing across 
 different cores, making it inefficient for modern 
 data center networking. While different techniques 
-have been proposed to address this issue, they suffer 
+have been proposed to address TCP poor efficiency issues, they suffer 
 from fundamental implications regarding maintainability, and
-efficiency, making operators 
+applicability to virtualized environment, making operators 
 and cloud tenants hesitant to deploy them. 
 
 VirtTAS is an approach to address this problem by decoupling the 
@@ -26,7 +26,7 @@ and scalability of Virt-TAS, leveraging OVS to take advantage
 of its network programmability capabilities, 
 and optimizing the solution by using fast-path processing. 
 
-We showed that VirtTAS provides \(2x\) throughput comparing to conventional
+We showed that VirtTAS provides \(100 \% \) increased throughput comparing to conventional
 Linux kernel packet processing for short messages, while 
 consuming 40\% less CPU cores, preserving precious cores 
-for the main goal, application logic.
+for the main goal, the application logic.

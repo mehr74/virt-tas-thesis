@@ -52,7 +52,7 @@ Virt-TAS is designed to fulfill the following goals:
 \begin{itemize}
     \item \textbf{Mobility} % write about not being coupled to a physical network
     VMs could be migrated to different locations, thus VirtTAS should allow VMs to continue 
-    communicating over the network, despite their migration. VirtTAS should decouple applications 
+    communicating over the network, despite their migration. VirtTAS should completely decouple applications 
     from physical networking infrastructures at their location.
     \item \textbf{Isolation} 
     Applications of one tenant must be prevented to violate other tenants' SLAs. 
@@ -61,11 +61,33 @@ Virt-TAS is designed to fulfill the following goals:
 
 \end{itemize}
 
-\section{Challenges}
-
 \section{Design principles}
 To achieve the aforementioned goals, we benefit from a set of design principles 
 to provide network virtualization features in a shared TCP fastpath.
+
+\begin{itemize}
+    \item \textbf{Fast-path/Slow-path separation} 
+    We integrated TCP Acceleration Service into our design which is an optimized
+     and streamlined processing of TCP network packets that 
+    follow a commonly used code path. As seen in the related work, fast path processing is
+    a common design approach for network applications to quickly process 
+    packets that do not require complex processing or special handling. 
+    By separating these packets from the ones that require special treatment, 
+    fast path processing enables the network to handle a large number of packets 
+    efficiently and with minimal overhead.
+
+    \item \textbf{Proxy design principle}
+    A pair of proxies runs on the host and guest VM and acts as an intermediary between 
+    the VMs and the TCP acceleration service. When a new application wants to connect to 
+    TAS, it sends a context request, which is intercepted by the proxy. The proxy forwards the 
+    request to TAS and returns the response to the VM. 
+    
+    Using proxy enables VirtTAS to be integratable to virtual manager programs such as 
+    virt manager \cite{virtmanager}, or Virtual Box \cite{virtualbox} as it acts as a gatekeeper,
+    controlling VM access to TAS and providing an additional layer of security.
+
+
+\end{itemize}
 
 \section{Virt-TAS Architecture Overview}
 
@@ -118,8 +140,22 @@ hypervisor instead of being transfered to the VMs network stack. Furthermore,
 By rewriting applications to use low level API of libTAS higher performance can be achieved.
 
 \section{Slow Path}
+
+The slow-path in VirtTAS operates on a dedicated thread. It is responsible for handling exceptional 
+cases related to policy decisions and virtualization management, as well as congestion control, 
+connection control, and connection setup and teardown.
+
+
 \subsection{Virtual switching}
-\subsection{Proxy Host on hypervisor}
+VirtTAS uses OVS as its virtual switch to direct traffic to the appropriate VM.
+The first packet of a flow is not recognised by the fast-path, therefore the 
+responsibility of the packet is handed over the slow-path and OVS by the fast-path.
+This forwarding is done via lock-free shared memories. OVS then updates the corresponding 
+flow table with the flows information and communicates the 
+decisions to VirtTAS. Subsequent packets for the same flow are not rerouted to the slow-path 
+and the decisions are available in the cache of fast-path. 
+
+\subsection{Proxy}
 
 The Proxy Host is a service that operates on the hypervisor as an intermediary between virtual 
 machines and the TAS. It uses the libtas library to connect to the running TAS instance on 
@@ -136,11 +172,11 @@ qemu-system-x86_64 \
 \end{lstlisting}
 
 runs a request to a server, it is sent to the proxy server first. The proxy server then makes a request to the server on behalf of the client, and returns the response back to the client.
-\subsection{Proxy guest on VMs}
-\subsection{Application Interface}
+%\subsection{Proxy guest on VMs}
+%\subsection{Application Interface}
 
-\section{Fast Path}
-\subsection{Connection setup}
-\subsection{OpenFlow action caching}
+%\section{Fast Path}
+%\subsection{Connection setup}
+%\subsection{OpenFlow action caching}
 
-\section{Application library}
+%\section{Application library}

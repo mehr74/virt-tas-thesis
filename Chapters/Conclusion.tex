@@ -1,0 +1,15 @@
+In conclusion, VirtTAS provides a solution to the problem of inefficient TCP packet 
+processing by decoupling the network stack from virtual machines and placing it on the 
+hypervisor. By utilizing a shared TCP fast-path, VirtTAS offers multiplexing advantages, 
+improved efficiency of CPU cycles, and decreased maintenance costs for tenants.
+
+We extended VirtTAS by integrating Open vSwitch (OVS) to provide 
+efficient packet processing and network virtualization features. We 
+improved the flexibility and scalability of TAS by introducing groups. Furthermore, we leveraged OVS to
+improve network programmability capabilities, and we optimized the solution by using fast-path processing.
+
+The results show that VirtTAS provides a 100\% increase in throughput compared to conventional 
+Linux kernel packet processing for short messages, while consuming 40\% less CPU cores. 
+This ensures that valuable CPU resources can be allocated to the main application logic. 
+Overall, VirtTAS with OVS integration enables efficient and flexible TCP packet processing 
+in virtualized environments.

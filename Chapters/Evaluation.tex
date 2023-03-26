@@ -11,15 +11,28 @@ We build TAS using DPDK 21.11.
 \section{Single flow overhead}
 
 \textbf{Throughput}
+In this experiment, we aimed to determine the overhead of VirtTAS compared 
+to running an application in a bare-metal approach without virtualization. 
+To achieve this, we conducted a Micro-RPC benchmark using three different approaches:
+1. baremetal TAS, 2. VirtTAS without using groups, and 3. VirtTAS with 16 groups.
 
-\begin{figure}
+Figure \ref{fig:overhead.throughput} shows the throughput of the client each 
+with 8 threads. As illustrated in the figure, the throughput for Group VirtTAS
+ is less than 10\% for packet sizes below 256 bytes. This indicates that VirtTAS 
+incurs reasonable overhead when compared to running the application in a bare-metal environment. 
+In other words, the results also suggest use of VirtTAS has comparable performance 
+to non-virtualized environment in scenarios with smaller packet sizes.
+
+
+\begin{figure}[H]
     \centering
     \includegraphics[scale=0.8]{../results/overhead.throughput.pdf}
     \caption{Single context overhead.}
     \label{fig:overhead.throughput}
 \end{figure}
 
-\textbf{Latency}
+
+% \textbf{Latency}
 
 
 
